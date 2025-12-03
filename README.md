@@ -127,11 +127,11 @@ A critical requirement for our HITL architecture is running the Playwright brows
 | **TightVNC Server** | **Remote Access** | Enables QA Users to connect remotely to the virtual display to **see and manually perform** stalled actions when the Bot pauses. |
 | **Nginx** | **Reverse Proxy & HTTPS** | Ensures the Google Chat Webhook connection is secure and stable (Production Grade). |
 
-### Implementation Steps (Systemd Service)
+### 🧩 Research Contribution Summary
 
-This configuration ensures the application always starts within the necessary virtual display environment:
-
-#### 1. Install Display Packages (on EC2)
-```bash
-# Install Xvfb (Virtual Display) and TightVNC (Remote Access)
-sudo apt install xvfb tightvncserver -y
+This system demonstrates a **proof-of-concept for AI-driven QA triage**, integrating multi-modal LLM reasoning and human-in-the-loop interaction.  
+It serves as an early prototype that inspired the company's subsequent move toward full automation.  
+Potential future directions include:
+- Self-healing DOM selectors and adaptive replay strategies.
+- Fine-tuned LLM models for action grounding and video-text alignment.
+- Integrating CI/CD pipelines for large-scale reproducibility.
