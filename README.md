@@ -113,5 +113,25 @@ flowchart TB
   style AH fill:#90EE90
 ```
 
-### 🚀 Deployment
-Runs 24/7 on **AWS EC2 (Ubuntu)** using **systemd** (auto-restart + auto-start on reboot) behind **Nginx**.
+## 🚀 Deployment (AWS EC2)
+
+The service is deployed on an **AWS EC2 (Ubuntu 22.04)** instance, utilizing **Gunicorn** and **systemd** for reliable, always-on operation.
+
+### 💡 Solution for Headful Human-in-the-Loop (HITL)
+
+A critical requirement for our HITL architecture is running the Playwright browser in **Headed Mode** (`headless=false`) on the server. Since EC2 is a headless environment, we implement a **Virtual Display Server** solution:
+
+| Component | Role | Purpose |
+| :--- | :--- | :--- |
+| **Xvfb** | **Virtual Display Server** | **MANDATORY:** Creates a virtual screen in memory, allowing Playwright to launch Chromium in Headed Mode for session preservation. |
+| **TightVNC Server** | **Remote Access** | Enables QA Users to connect remotely to the virtual display to **see and manually perform** stalled actions when the Bot pauses. |
+| **Nginx** | **Reverse Proxy & HTTPS** | Ensures the Google Chat Webhook connection is secure and stable (Production Grade). |
+
+### Implementation Steps (Systemd Service)
+
+This configuration ensures the application always starts within the necessary virtual display environment:
+
+#### 1. Install Display Packages (on EC2)
+```bash
+# Install Xvfb (Virtual Display) and TightVNC (Remote Access)
+sudo apt install xvfb tightvncserver -y
